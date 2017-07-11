@@ -1,0 +1,13 @@
+sudo: require
+language: cpp
+compiler: gcc
+before_install:
+	- sudo apt-get -qq update
+	- sudo apt-get install -y libgtest-dev
+before_script:
+	- mkdir build
+	- cd build
+	- cmake ..
+	- make
+	- ls -l
+script: ./tests
