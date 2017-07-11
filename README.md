@@ -1,4 +1,9 @@
 # SaveLoad
+[![Build Status][travis-image]][travis]
+
+[travis-image]: https://travis-ci.org/bakwc/SaveLoad.svg?branch=master
+[travis]: https://travis-ci.org/bakwc/SaveLoad
+
 C++ serializer
 ```cpp
 #include "saveload.h"
