@@ -6,7 +6,6 @@
 #include <utility>
 #include <iostream>
 #include <streambuf>
-#include <cstdint>
 
 namespace NSaveLoad {
 
