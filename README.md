@@ -4,7 +4,7 @@
 [travis-image]: https://travis-ci.org/bakwc/SaveLoad.svg?branch=master
 [travis]: https://travis-ci.org/bakwc/SaveLoad
 
-C++ serializer
+Tiny C++ serializer. Single-header, supports POD types, classes and STL containers.
 ```cpp
 #include "saveload.h"
 
