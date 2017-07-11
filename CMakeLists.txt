@@ -10,6 +10,6 @@ include_directories(${GTEST_INCLUDE_DIRS})
 
 enable_testing()
 add_executable(tests tests.cpp saveload.h)
-target_link_libraries(tests ${GTEST_BOTH_LIBRARIES})
+target_link_libraries(tests ${GTEST_BOTH_LIBRARIES} pthread)
 add_test(tests tests)
 
