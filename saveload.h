@@ -5,6 +5,8 @@
 #include <list>
 #include <map>
 #include <unordered_map>
+#include <set>
+#include <unordered_set>
 #include <utility>
 #include <iostream>
 #include <streambuf>
@@ -88,11 +90,36 @@ public:
     }
 };
 
+template<class TVec, class TObj>
+class TSetSerializer {
+public:
+    static inline void Save(std::ostream& out, const TVec& object) {
+        unsigned short size = object.size();
+        out.write((const char*)(&size), 2);
+        for (const auto& obj: object) {
+            NSaveLoad::Save(out, obj);
+        }
+    }
+
+    static inline void Load(std::istream& in, TVec& object) {
+        unsigned short size;
+        in.read((char*)(&size), 2);
+        object.clear();
+        for (size_t i = 0; i < size; ++i) {
+            TObj obj;
+            NSaveLoad::Load(in, obj);
+            object.insert(std::move(obj));
+        }
+    }
+};
+
 template <class T> class TSerializer<std::vector<T> >: public TVectorSerializer<std::vector<T>, T > {};
 template <class T> class TSerializer<std::list<T> >: public TVectorSerializer<std::list<T>, T > {};
 template <> class TSerializer<std::string>: public TVectorSerializer<std::string, char> {};
 template <class K, class V> class TSerializer<std::map<K, V> >: public TMapSerializer<std::map<K, V>, K, V > {};
 template <class K, class V> class TSerializer<std::unordered_map<K, V> >: public TMapSerializer<std::unordered_map<K, V>, K, V > {};
+template <class T> class TSerializer<std::set<T> >: public TSetSerializer<std::set<T>, T > {};
+template <class T> class TSerializer<std::unordered_set<T> >: public TSetSerializer<std::unordered_set<T>, T > {};
 
 template <class T>
 class TPodSerializer {

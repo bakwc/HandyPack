@@ -5,6 +5,8 @@
 #include <vector>
 #include <map>
 #include <unordered_map>
+#include <set>
+#include <unordered_set>
 
 
 using namespace NSaveLoad;
@@ -185,4 +187,44 @@ TEST(SaveLoadTest, unorderedMapTest) {
 
     ASSERT_EQ(m2["hello"], 42);
     ASSERT_EQ(m2["world"], 39);
+}
+
+TEST(SaveLoadTest, setTest) {
+    std::set<int> s1, s2;
+    s1.insert(10);
+    s1.insert(20);
+    s1.insert(50);
+
+    std::stringstream out;
+    Save(out, s1);
+
+    std::string data = out.str();
+    imemstream in(data.c_str(), data.size());
+
+    Load(in, s2);
+
+    ASSERT_TRUE(s2.find(10) != s2.end());
+    ASSERT_TRUE(s2.find(20) != s2.end());
+    ASSERT_TRUE(s2.find(50) != s2.end());
+    ASSERT_TRUE(s2.find(100) == s2.end());
+}
+
+TEST(SaveLoadTest, unorderedSetTest) {
+    std::unordered_set<int> s1, s2;
+    s1.insert(10);
+    s1.insert(20);
+    s1.insert(50);
+
+    std::stringstream out;
+    Save(out, s1);
+
+    std::string data = out.str();
+    imemstream in(data.c_str(), data.size());
+
+    Load(in, s2);
+
+    ASSERT_TRUE(s2.find(10) != s2.end());
+    ASSERT_TRUE(s2.find(20) != s2.end());
+    ASSERT_TRUE(s2.find(50) != s2.end());
+    ASSERT_TRUE(s2.find(100) == s2.end());
 }
