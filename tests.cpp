@@ -3,6 +3,8 @@
 #include <gtest/gtest.h>
 #include <sstream>
 #include <vector>
+#include <map>
+#include <unordered_map>
 
 
 using namespace NSaveLoad;
@@ -149,4 +151,38 @@ TEST(SaveLoadTest, vectorTest3) {
     ASSERT_EQ(unpacked.size(), 2);
     ASSERT_EQ(unpacked[0].A, "hello world");
     ASSERT_EQ(unpacked[1].B, 20);
+}
+
+TEST(SaveLoadTest, mapTest) {
+    std::map<std::string, int> m1, m2;
+    m1["hello"] = 42;
+    m1["world"] = 39;
+
+    std::stringstream out;
+    Save(out, m1);
+
+    std::string data = out.str();
+    imemstream in(data.c_str(), data.size());
+
+    Load(in, m2);
+
+    ASSERT_EQ(m2["hello"], 42);
+    ASSERT_EQ(m2["world"], 39);
+}
+
+TEST(SaveLoadTest, unorderedMapTest) {
+    std::unordered_map<std::string, int> m1, m2;
+    m1["hello"] = 42;
+    m1["world"] = 39;
+
+    std::stringstream out;
+    Save(out, m1);
+
+    std::string data = out.str();
+    imemstream in(data.c_str(), data.size());
+
+    Load(in, m2);
+
+    ASSERT_EQ(m2["hello"], 42);
+    ASSERT_EQ(m2["world"], 39);
 }
