@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include <set>
 #include <unordered_set>
+#include <tuple>
 
 
 using namespace NSaveLoad;
@@ -227,4 +228,21 @@ TEST(SaveLoadTest, unorderedSetTest) {
     ASSERT_TRUE(s2.find(20) != s2.end());
     ASSERT_TRUE(s2.find(50) != s2.end());
     ASSERT_TRUE(s2.find(100) == s2.end());
+}
+
+TEST(SaveLoadTest, tupletest) {
+    std::tuple<uint32_t, int8_t, std::string> t1(42, -3, "test");
+    std::tuple<uint32_t, int8_t, std::string> t2;
+
+    std::stringstream out;
+    Save(out, t1);
+
+    std::string data = out.str();
+    imemstream in(data.c_str(), data.size());
+
+    Load(in, t2);
+
+    ASSERT_EQ(std::get<0>(t2), 42);
+    ASSERT_EQ(std::get<1>(t2), -3);
+    ASSERT_EQ(std::get<2>(t2), "test");
 }

@@ -10,6 +10,7 @@
 #include <utility>
 #include <iostream>
 #include <streambuf>
+#include <tuple>
 
 namespace NSaveLoad {
 
@@ -41,6 +42,41 @@ public:
     static void Load(std::istream& in, std::pair<A, B>& object) {
         NSaveLoad::Load(in, object.first);
         NSaveLoad::Load(in, object.second);
+    }
+};
+
+template<std::size_t> struct int_{};
+
+template <class Tuple, size_t Pos>
+void SaveTuple(std::ostream& out, const Tuple& tuple, int_<Pos>) {
+    SaveTuple(out, tuple, int_<Pos-1>());
+    NSaveLoad::Save(out, std::get<std::tuple_size<Tuple>::value-Pos>(tuple));
+}
+
+template <class Tuple>
+void SaveTuple(std::ostream& out, const Tuple& tuple, int_<1>) {
+    NSaveLoad::Save(out, std::get<std::tuple_size<Tuple>::value-1>(tuple));
+}
+
+template <class Tuple, size_t Pos>
+void LoadTuple(std::istream& in, Tuple& tuple, int_<Pos>) {
+    LoadTuple(in, tuple, int_<Pos-1>());
+    NSaveLoad::Load(in, std::get<std::tuple_size<Tuple>::value-Pos>(tuple));
+}
+
+template <class Tuple>
+void LoadTuple(std::istream& in, Tuple& tuple, int_<1>) {
+    NSaveLoad::Load(in, std::get<std::tuple_size<Tuple>::value-1>(tuple));
+}
+
+template <class... Args>
+class TSerializer<std::tuple<Args...>> {
+public:
+    static void Save(std::ostream& out, const std::tuple<Args...>& object) {
+        SaveTuple(out, object, int_<sizeof...(Args)>());
+    }
+    static void Load(std::istream& in, std::tuple<Args...>& object) {
+        LoadTuple(in, object, int_<sizeof...(Args)>());
     }
 };
 
