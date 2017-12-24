@@ -84,16 +84,16 @@ template<class TVec, class TObj>
 class TVectorSerializer {
 public:
     static inline void Save(std::ostream& out, const TVec& object) {
-        unsigned short size = object.size();
-        out.write((const char*)(&size), 2);
+        uint32_t size = object.size();
+        out.write((const char*)(&size), sizeof(size));
         for (const auto& obj: object) {
             NSaveLoad::Save(out, obj);
         }
     }
 
     static inline void Load(std::istream& in, TVec& object) {
-        unsigned short size;
-        in.read((char*)(&size), 2);
+        uint32_t size;
+        in.read((char*)(&size), sizeof(size));
         object.clear();
         for (size_t i = 0; i < size; ++i) {
             TObj obj;
@@ -107,16 +107,16 @@ template<class TVec, class TKey, class TValue>
 class TMapSerializer {
 public:
     static inline void Save(std::ostream& out, const TVec& object) {
-        unsigned short size = object.size();
-        out.write((const char*)(&size), 2);
+        uint32_t size = object.size();
+        out.write((const char*)(&size), sizeof(size));
         for (const auto& obj: object) {
             NSaveLoad::Save(out, obj);
         }
     }
 
     static inline void Load(std::istream& in, TVec& object) {
-        unsigned short size;
-        in.read((char*)(&size), 2);
+        uint32_t size;
+        in.read((char*)(&size), sizeof(size));
         object.clear();
         for (size_t i = 0; i < size; ++i) {
             std::pair<TKey, TValue> obj;
@@ -130,16 +130,16 @@ template<class TVec, class TObj>
 class TSetSerializer {
 public:
     static inline void Save(std::ostream& out, const TVec& object) {
-        unsigned short size = object.size();
-        out.write((const char*)(&size), 2);
+        uint32_t size = object.size();
+        out.write((const char*)(&size), sizeof(size));
         for (const auto& obj: object) {
             NSaveLoad::Save(out, obj);
         }
     }
 
     static inline void Load(std::istream& in, TVec& object) {
-        unsigned short size;
-        in.read((char*)(&size), 2);
+        uint32_t size;
+        in.read((char*)(&size), sizeof(size));
         object.clear();
         for (size_t i = 0; i < size; ++i) {
             TObj obj;
