@@ -4,6 +4,7 @@ language: cpp
 compiler: gcc
 before_install:
     - sudo apt-get -qq update
+    - sudo apt-get install -y cmake
     - sudo apt-get install -y libgtest-dev
     - cd /usr/src/gtest
     - sudo cmake CMakeLists.txt
