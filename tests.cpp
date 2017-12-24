@@ -246,3 +246,35 @@ TEST(SaveLoadTest, tupletest) {
     ASSERT_EQ(std::get<1>(t2), -3);
     ASSERT_EQ(std::get<2>(t2), "test");
 }
+
+TEST(SaveLoadTest, wstringtest) {
+    std::wstring s1 = L"test_wide_string ыыы";
+    std::wstring s2;
+
+    std::stringstream out;
+    Save(out, s1);
+
+    std::string data = out.str();
+    imemstream in(data.c_str(), data.size());
+
+    Load(in, s2);
+
+    ASSERT_EQ(s1, s2);
+}
+
+TEST(SaveLoadTest, wstringUnorderedMap) {
+    std::unordered_map<std::wstring, uint32_t> m1, m2;
+    m1[L"test_wide_string ыыы"] = 13;
+    m1[L"someTest"] = 42;
+
+    std::stringstream out;
+    Save(out, m1);
+
+    std::string data = out.str();
+    imemstream in(data.c_str(), data.size());
+
+    Load(in, m2);
+
+    ASSERT_EQ(m2[L"someTest"], 42);
+    ASSERT_EQ(m2[L"test_wide_string ыыы"], 13);
+}
