@@ -9,7 +9,7 @@ include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${GTEST_INCLUDE_DIRS})
 
 enable_testing()
-add_executable(tests tests.cpp saveload.h)
+add_executable(tests tests.cpp saveload.hpp)
 target_link_libraries(tests ${GTEST_BOTH_LIBRARIES} pthread)
 add_test(tests tests)
 
