@@ -159,11 +159,11 @@ static inline void Load(std::istream& in, T& first, Args&... args) {
 
 #define SAVELOAD(...) \
     inline virtual void Save(std::ostream& out) const { \
-        ::Save(out, __VA_ARGS__);             \
+        NSaveLoad::Save(out, __VA_ARGS__);             \
     } \
  \
     inline virtual void Load(std::istream& in) { \
-        ::Load(in, __VA_ARGS__);             \
+        NSaveLoad::Load(in, __VA_ARGS__);             \
     }
 
 
