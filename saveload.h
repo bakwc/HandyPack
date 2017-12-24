@@ -118,7 +118,7 @@ template <class T> class TSerializer<std::list<T> >: public TVectorSerializer<st
 template <> class TSerializer<std::string>: public TVectorSerializer<std::string, char> {};
 template <> class TSerializer<std::wstring>: public TVectorSerializer<std::wstring, wchar_t> {};
 template <class K, class V> class TSerializer<std::map<K, V> >: public TMapSerializer<std::map<K, V>, K, V > {};
-template <class K, class V> class TSerializer<std::unordered_map<K, V> >: public TMapSerializer<std::unordered_map<K, V>, K, V > {};
+template <class K, class V, class H> class TSerializer<std::unordered_map<K, V, H> >: public TMapSerializer<std::unordered_map<K, V, H>, K, V > {};
 template <class T> class TSerializer<std::set<T> >: public TSetSerializer<std::set<T>, T > {};
 template <class T> class TSerializer<std::unordered_set<T> >: public TSetSerializer<std::unordered_set<T>, T > {};
 
