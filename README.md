@@ -1,20 +1,20 @@
-# SaveLoad
+# HandyPack
 [![Build Status][travis-image]][travis]
 
-[travis-image]: https://travis-ci.org/bakwc/SaveLoad.svg?branch=master
-[travis]: https://travis-ci.org/bakwc/SaveLoad
+[travis-image]: https://travis-ci.org/bakwc/HandyPack.svg?branch=master
+[travis]: https://travis-ci.org/bakwc/HandyPack
 
 Tiny C++ serializer. Single-header, supports POD types, classes and STL containers.
 ```cpp
-#include "saveload.hpp"
+#include "handypack.hpp"
 
-using namespace NSaveLoad;
+using namespace NHandyPack;
 
 struct Bar {
   int A;
   std::vector<std::string> B;
   std::list<Foo> C;
-  SAVELOAD(A, B, C)
+  HANDYPACK(A, B, C)
 }
 
 Bar bar;

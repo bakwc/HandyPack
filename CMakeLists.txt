@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-project(saveload)
+project(handypack)
 
 set(CMAKE_CXX_FLAGS "-std=c++11 -fPIC")
 
@@ -9,7 +9,6 @@ include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${GTEST_INCLUDE_DIRS})
 
 enable_testing()
-add_executable(tests tests.cpp saveload.hpp)
+add_executable(tests tests.cpp handypack.hpp)
 target_link_libraries(tests ${GTEST_BOTH_LIBRARIES} pthread)
 add_test(tests tests)
-

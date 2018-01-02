@@ -1,4 +1,4 @@
-#include "saveload.hpp"
+#include "handypack.hpp"
 
 #include <gtest/gtest.h>
 #include <sstream>
@@ -10,9 +10,9 @@
 #include <tuple>
 
 
-using namespace NSaveLoad;
+using namespace NHandyPack;
 
-TEST(SaveLoadTest, podTypes) {
+TEST(HandyPackTest, podTypes) {
     std::stringstream out;
     int8_t ti8 = -1;
     uint8_t tui8 = 2;
@@ -23,10 +23,10 @@ TEST(SaveLoadTest, podTypes) {
     int32_t ti64 = -7;
     uint32_t tui64 = 8;
 
-    Save(out, ti8);
-    Save(out, tui8);
-    Save(out, ti16, tui16);
-    Save(out, ti32, tui32, ti64, tui64);
+    Dump(out, ti8);
+    Dump(out, tui8);
+    Dump(out, ti16, tui16);
+    Dump(out, ti32, tui32, ti64, tui64);
 
     std::string data = out.str();
     imemstream in(data.c_str(), data.size());
@@ -62,10 +62,10 @@ struct TSimpleStruct {
     double D;
     float E;
 
-    SAVELOAD(A, B, C, D, E)
+    HANDYPACK(A, B, C, D, E)
 };
 
-TEST(SaveLoadTest, simpleStruct) {
+TEST(HandyPackTest, simpleStruct) {
     TSimpleStruct test;
     test.A = 1;
     test.B = 2;
@@ -74,7 +74,7 @@ TEST(SaveLoadTest, simpleStruct) {
     test.E = 5;
 
     std::stringstream out;
-    Save(out, test);
+    Dump(out, test);
     std::string data = out.str();
     imemstream in(data.c_str(), data.size());
 
@@ -88,14 +88,14 @@ TEST(SaveLoadTest, simpleStruct) {
     ASSERT_EQ(unpacked.E, 5);
 }
 
-TEST(SaveLoadTest, vectorTest) {
+TEST(HandyPackTest, vectorTest) {
     std::vector<int> nums, unpacked;
     nums.push_back(10);
     nums.push_back(30);
     nums.push_back(50);
 
     std::stringstream out;
-    Save(out, nums);
+    Dump(out, nums);
     std::string data = out.str();
     imemstream in(data.c_str(), data.size());
 
@@ -107,7 +107,7 @@ TEST(SaveLoadTest, vectorTest) {
     ASSERT_EQ(unpacked[2], 50);
 }
 
-TEST(SaveLoadTest, vectorTest2) {
+TEST(HandyPackTest, vectorTest2) {
     std::vector<TSimpleStruct> vec, unpacked;
     TSimpleStruct a,b;
     a.A = 10;
@@ -117,7 +117,7 @@ TEST(SaveLoadTest, vectorTest2) {
     vec.push_back(b);
 
     std::stringstream out;
-    Save(out, vec);
+    Dump(out, vec);
     std::string data = out.str();
     imemstream in(data.c_str(), data.size());
 
@@ -132,10 +132,10 @@ struct TStructWithString {
     std::string A;
     int B;
 
-    SAVELOAD(A, B)
+    HANDYPACK(A, B)
 };
 
-TEST(SaveLoadTest, vectorTest3) {
+TEST(HandyPackTest, vectorTest3) {
     std::vector<TStructWithString> vec, unpacked;
     TStructWithString a,b;
     a.A = "hello world";
@@ -145,7 +145,7 @@ TEST(SaveLoadTest, vectorTest3) {
     vec.push_back(b);
 
     std::stringstream out;
-    Save(out, vec);
+    Dump(out, vec);
     std::string data = out.str();
     imemstream in(data.c_str(), data.size());
 
@@ -156,13 +156,13 @@ TEST(SaveLoadTest, vectorTest3) {
     ASSERT_EQ(unpacked[1].B, 20);
 }
 
-TEST(SaveLoadTest, mapTest) {
+TEST(HandyPackTest, mapTest) {
     std::map<std::string, int> m1, m2;
     m1["hello"] = 42;
     m1["world"] = 39;
 
     std::stringstream out;
-    Save(out, m1);
+    Dump(out, m1);
 
     std::string data = out.str();
     imemstream in(data.c_str(), data.size());
@@ -173,13 +173,13 @@ TEST(SaveLoadTest, mapTest) {
     ASSERT_EQ(m2["world"], 39);
 }
 
-TEST(SaveLoadTest, unorderedMapTest) {
+TEST(HandyPackTest, unorderedMapTest) {
     std::unordered_map<std::string, int> m1, m2;
     m1["hello"] = 42;
     m1["world"] = 39;
 
     std::stringstream out;
-    Save(out, m1);
+    Dump(out, m1);
 
     std::string data = out.str();
     imemstream in(data.c_str(), data.size());
@@ -190,14 +190,14 @@ TEST(SaveLoadTest, unorderedMapTest) {
     ASSERT_EQ(m2["world"], 39);
 }
 
-TEST(SaveLoadTest, setTest) {
+TEST(HandyPackTest, setTest) {
     std::set<int> s1, s2;
     s1.insert(10);
     s1.insert(20);
     s1.insert(50);
 
     std::stringstream out;
-    Save(out, s1);
+    Dump(out, s1);
 
     std::string data = out.str();
     imemstream in(data.c_str(), data.size());
@@ -210,14 +210,14 @@ TEST(SaveLoadTest, setTest) {
     ASSERT_TRUE(s2.find(100) == s2.end());
 }
 
-TEST(SaveLoadTest, unorderedSetTest) {
+TEST(HandyPackTest, unorderedSetTest) {
     std::unordered_set<int> s1, s2;
     s1.insert(10);
     s1.insert(20);
     s1.insert(50);
 
     std::stringstream out;
-    Save(out, s1);
+    Dump(out, s1);
 
     std::string data = out.str();
     imemstream in(data.c_str(), data.size());
@@ -230,12 +230,12 @@ TEST(SaveLoadTest, unorderedSetTest) {
     ASSERT_TRUE(s2.find(100) == s2.end());
 }
 
-TEST(SaveLoadTest, tupletest) {
+TEST(HandyPackTest, tupletest) {
     std::tuple<uint32_t, int8_t, std::string> t1(42, -3, "test");
     std::tuple<uint32_t, int8_t, std::string> t2;
 
     std::stringstream out;
-    Save(out, t1);
+    Dump(out, t1);
 
     std::string data = out.str();
     imemstream in(data.c_str(), data.size());
@@ -247,12 +247,12 @@ TEST(SaveLoadTest, tupletest) {
     ASSERT_EQ(std::get<2>(t2), "test");
 }
 
-TEST(SaveLoadTest, wstringtest) {
+TEST(HandyPackTest, wstringtest) {
     std::wstring s1 = L"test_wide_string ыыы";
     std::wstring s2;
 
     std::stringstream out;
-    Save(out, s1);
+    Dump(out, s1);
 
     std::string data = out.str();
     imemstream in(data.c_str(), data.size());
@@ -262,13 +262,13 @@ TEST(SaveLoadTest, wstringtest) {
     ASSERT_EQ(s1, s2);
 }
 
-TEST(SaveLoadTest, wstringUnorderedMap) {
+TEST(HandyPackTest, wstringUnorderedMap) {
     std::unordered_map<std::wstring, uint32_t> m1, m2;
     m1[L"test_wide_string ыыы"] = 13;
     m1[L"someTest"] = 42;
 
     std::stringstream out;
-    Save(out, m1);
+    Dump(out, m1);
 
     std::string data = out.str();
     imemstream in(data.c_str(), data.size());
